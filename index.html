@@ -585,6 +585,7 @@ function answer(pt, btn, idx){
   document.querySelectorAll('.choice-btn').forEach(b=>{b.disabled=true;b.style.opacity='.4';});
   btn.style.opacity='1';
   btn.classList.add('flash');
+　 btn.blur();
   const hintArea=document.getElementById('hint-area');
   hintArea.innerHTML=`<div class="hint-box"><div class="hint-label">💡 プロのワンポイント解説</div>${q.hint}</div>`;
   setTimeout(()=>{
