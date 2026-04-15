@@ -379,7 +379,8 @@
 <!-- TOP -->
 <div id="top" class="screen active">
   <div id="top-img-wrap">
-    <div class="top-img-placeholder">top.png</div>
+    <img src="top.png" class="top-img" alt="MEO診断">
+
   </div>
   <div class="top-title">あなたのサロンは<br><span>AIに見えていますか？</span></div>
   <div class="top-sub">全12問・約3分｜MEO資産度診断<br>Googleマップ時代の「集客力」を数値化</div>
@@ -608,7 +609,8 @@ function showResult(){
   inner.innerHTML=`
     <div class="result-rank">RANK ${rank.rank}</div>
     <div class="result-score">スコア：${total} / 120点</div>
-    <div class="result-img-placeholder">${rank.img}</div>
+    <img src="${rank.img}" class="result-img" alt="${rank.title}">
+
     <div class="result-title">${rank.title}</div>
     <div class="result-msg">${rank.msg}</div>
     <a href="https://lin.ee/woRCsiS" target="_blank" rel="noopener" class="line-cta">
