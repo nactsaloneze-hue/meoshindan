@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MEO資産度診断</title>
+<title>サロンのオンライン集客チェック</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{
@@ -202,57 +202,6 @@
     margin-bottom:8px;
   }
 
-  /* ===== LOADING ===== */
-  #loading{
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:none;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:32px;
-    z-index:100;
-  }
-  #loading.active{display:flex;}
-  .loader-ring{
-    width:80px;
-    height:80px;
-    border:3px solid #111;
-    border-top:3px solid var(--neon);
-    border-right:3px solid var(--neon2);
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-  }
-  @keyframes spin{to{transform:rotate(360deg);}}
-  .loader-text{
-    font-size:clamp(15px,4vw,20px);
-    color:var(--neon);
-    letter-spacing:.05em;
-    text-align:center;
-    animation:pulse 1.5s ease-in-out infinite;
-  }
-  @keyframes pulse{
-    0%,100%{opacity:.5;}
-    50%{opacity:1;}
-  }
-  .loader-sub{
-    font-size:13px;
-    color:#555;
-    letter-spacing:.1em;
-  }
-  .scan-line{
-    width:200px;
-    height:2px;
-    background:linear-gradient(90deg,transparent,var(--neon),transparent);
-    animation:scan 1.5s ease-in-out infinite;
-  }
-  @keyframes scan{
-    0%{transform:scaleX(0);opacity:0;}
-    50%{transform:scaleX(1);opacity:1;}
-    100%{transform:scaleX(0);opacity:0;}
-  }
-
   /* ===== RESULT ===== */
   #result{gap:28px;text-align:center;}
   .result-inner{
@@ -317,6 +266,21 @@
     width:100%;
   }
   .result-msg strong{color:var(--neon);}
+  .result-note{
+    width:100%;
+    color:var(--gray);
+    font-size:14px;
+    line-height:1.7;
+  }
+  .priority-box{
+    width:100%;
+    text-align:left;
+    padding:20px 24px;
+    border:1px solid var(--gold);
+    border-radius:8px;
+    line-height:1.7;
+  }
+  .priority-box strong{color:var(--gold);display:block;margin-bottom:6px;}
   .line-cta{
     width:100%;
     background:#06C755;
@@ -379,25 +343,17 @@
 <!-- TOP -->
 <div id="top" class="screen active">
   <div id="top-img-wrap">
-    <img src="top.png" class="top-img" alt="MEO診断">
+    <img src="top.png" class="top-img" alt="診断トップ画像">
 
   </div>
-  <div class="top-title">あなたのサロンは<br><span>AIに見えていますか？</span></div>
-  <div class="top-sub">全12問・約3分｜MEO資産度診断<br>Googleマップ時代の「集客力」を数値化</div>
+  <div class="top-title">あなたのサロンの<br><span>見つけやすさと予約のしやすさをチェック</span></div>
+  <div class="top-sub">全12問・約3分｜オンライン集客の自己点検<br>回答を点数化した目安です。検索順位や売上を測定するものではありません。</div>
   <button class="start-btn" onclick="startQuiz()">診断スタート →</button>
 </div>
 
 <!-- QUIZ -->
 <div id="quiz" class="screen">
   <div class="quiz-inner" id="quiz-inner"></div>
-</div>
-
-<!-- LOADING -->
-<div id="loading">
-  <div class="loader-ring"></div>
-  <div class="scan-line"></div>
-  <div class="loader-text">AIがサロンの構造を解析中...</div>
-  <div class="loader-sub">ANALYZING MEO ASSET SCORE</div>
 </div>
 
 <!-- RESULT -->
@@ -409,137 +365,149 @@
 const questions = [
   {
     num:1,
-    text:'もし今日インスタが消えたら、来月の新規予約は「ゼロ」になる恐怖がありますか？',
-    hint:'SNSに依存しない集客構造が、これからの時代に必須のサロン資産です。Googleマップやホームページからの自然流入こそ、働かなくても回る「仕組み」の入口。',
+    text:'Googleビジネスプロフィールを管理し、店舗の基本情報を確認していますか？',
+    hint:'オーナー確認を行い、営業時間・連絡先・所在地などを最新に保つと、お客様が安心して来店を検討できます。',
+    action:'Googleビジネスプロフィールのオーナー確認と基本情報を確認する',
     choices:[
-      {tag:'A',text:'いいえ。他のルート（HPやマップ）から予約が入る自信がある。',pt:10},
-      {tag:'B',text:'少し不安。インスタ経由の予約が半分以上を占めている。',pt:5},
-      {tag:'C',text:'はい。ビジネスが完全に止まってしまう。',pt:0},
+      {tag:'A',text:'オーナー確認済みで、基本情報も定期的に見直している。',pt:10},
+      {tag:'B',text:'プロフィールはあるが、情報の確認が不定期。',pt:5},
+      {tag:'C',text:'プロフィールの管理状況が分からない、または未設定。',pt:0},
     ]
   },
   {
     num:2,
-    text:'あなたのお店を表現する言葉に「癒やし」「隠れ家」などの抽象的な言葉ばかり使っていませんか？',
-    hint:'AIは「感性」ではなく「名詞」で検索します。「〇〇市 痩身エステ」「〇〇駅 小顔フェイシャル」のように、具体的な地名×施術名が、AIに届く言葉です。',
+    text:'提供している施術やサービスは、店舗情報で分かりやすく伝わりますか？',
+    hint:'実際のメニューに合うカテゴリやサービス説明を使い、初めてのお客様にも内容が伝わるようにしましょう。',
+    action:'カテゴリ・サービス・メニューの説明を実際の提供内容に合わせる',
     choices:[
-      {tag:'A',text:'「〇〇市 痩身」「〇〇駅 小顔」など、AIが認識しやすい具体的な名詞を多用している。',pt:10},
-      {tag:'B',text:'意識はしているが、つい雰囲気重視の言葉を選んでしまう。',pt:5},
-      {tag:'C',text:'雰囲気や感性だけで伝えている。',pt:0},
+      {tag:'A',text:'カテゴリとサービス内容が実態に合い、料金や特徴も分かる。',pt:10},
+      {tag:'B',text:'主なサービスは載せているが、説明や料金に不足がある。',pt:5},
+      {tag:'C',text:'提供内容が古い、または何を受けられるか分かりにくい。',pt:0},
     ]
   },
   {
     num:3,
-    text:'あなたのお店のHPは、自分でお金を払って管理している「独自ドメイン」ですか？',
-    hint:'無料ブログや予約サイトは「借地」。独自ドメインだけが「自分の土地」です。育てるなら、いつか手放さなければいけない場所ではなく、永遠に自分のものになる土地を選んでください。',
+    text:'営業時間・住所・連絡先は、Googleマップや予約ページで正確ですか？',
+    hint:'表記を一文字単位でそろえることより、来店や予約に必要な情報が正確であることを優先しましょう。臨時休業や移転時の更新も大切です。',
+    action:'営業時間・住所・電話番号と臨時変更の案内を確認する',
     choices:[
-      {tag:'A',text:'はい。自分の土地（ドメイン）を育てている。',pt:10},
-      {tag:'B',text:'無料ブログや、ホットペッパーなどの予約サイトをHP代わりにしている。',pt:5},
-      {tag:'C',text:'HP自体を持っていない。',pt:0},
+      {tag:'A',text:'主要な掲載先で確認し、変更があれば更新している。',pt:10},
+      {tag:'B',text:'おおむね正しいが、最近は見直していない。',pt:5},
+      {tag:'C',text:'掲載先によって情報が違う、または確認していない。',pt:0},
     ]
   },
   {
     num:4,
-    text:'GoogleマップとHPに載せている「住所・電話番号・営業時間」は、1文字も狂わず一致していますか？',
-    hint:'AIは「NAP情報（名称・住所・電話番号）の一致度」でお店の信頼性を判断します。「1丁目」と「1-」のような表記ゆれも、AIにとっては別の情報。一文字の油断が信頼を下げます。',
+    text:'店内や施術内容が伝わる、実際の写真を掲載していますか？',
+    hint:'外観・店内・設備・サービスの写真は、来店前の不安を減らす材料になります。人物を写す場合は掲載許可も確認しましょう。',
+    action:'来店前に知りたい外観・店内・サービスの写真を見直す',
     choices:[
-      {tag:'A',text:'完璧に一致させている。',pt:10},
-      {tag:'B',text:'だいたい合っていると思うが、表記ゆれ（1-1か一丁目一番地）があるかも。',pt:5},
-      {tag:'C',text:'確認したことがない。',pt:0},
+      {tag:'A',text:'実際の雰囲気が分かる写真を掲載し、変化に合わせて更新している。',pt:10},
+      {tag:'B',text:'写真はあるが、現在の店内やサービスと少し違う。',pt:5},
+      {tag:'C',text:'写真が少ない、または実際の様子が伝わらない。',pt:0},
     ]
   },
   {
     num:5,
-    text:'Googleビジネスプロフィールの「最新情報」を、週に1回以上写真付きで投稿していますか？',
-    hint:'Googleマップは「更新し続けるお店」を優先して表示します。週1投稿は、AIに「このお店は生きている」と伝えるための最低ライン。放置は「閉店」と同じシグナルです。',
+    text:'お客様の口コミに、内容を踏まえて丁寧に返信していますか？',
+    hint:'返信は次のお客様にも見られます。感謝を伝え、個人情報や施術の詳細を公開しすぎないことが大切です。検索順位への効果は保証できません。',
+    action:'口コミへの返信方法とプライバシーへの配慮を確認する',
     choices:[
-      {tag:'A',text:'はい。定期的にお店のアピールをAIに届けている。',pt:10},
-      {tag:'B',text:'月に1〜2回程度。',pt:5},
-      {tag:'C',text:'放置している。',pt:0},
+      {tag:'A',text:'口コミを確認し、内容に合わせて丁寧に返信している。',pt:10},
+      {tag:'B',text:'確認しているが、返信できていないものがある。',pt:5},
+      {tag:'C',text:'口コミをほとんど確認していない。',pt:0},
     ]
   },
   {
     num:6,
-    text:'直近3ヶ月以内に、施術風景やビフォーアフターの写真を5枚以上アップしましたか？',
-    hint:'写真はAIが「このお店の専門性」を判断するデータです。古い写真しかないプロフィールは、古いお店という印象を与えます。最新の施術写真を、あなたのサロンの「証拠」として定期的に積み上げましょう。',
+    text:'休業日や新メニューなど、お客様に必要な変更を伝えていますか？',
+    hint:'Googleビジネスプロフィールの投稿は、最新情報やお知らせを届ける手段です。週に何回投稿すれば順位が上がる、という決まりはありません。',
+    action:'休業日・新メニュー・キャンペーンなどの案内を最新にする',
     choices:[
-      {tag:'A',text:'はい。常に最新の情報を視覚的に届けている。',pt:10},
-      {tag:'B',text:'数枚は上げているが、古い写真も多い。',pt:5},
-      {tag:'C',text:'写真はほとんど変えていない。',pt:0},
+      {tag:'A',text:'変更があれば、プロフィールや予約ページで案内している。',pt:10},
+      {tag:'B',text:'案内しているが、掲載先によって古い情報が残ることがある。',pt:5},
+      {tag:'C',text:'変更があってもオンラインでは案内していない。',pt:0},
     ]
   },
   {
     num:7,
-    text:'いただいた口コミに対して、定型文ではなく「プロの視点」を交えた返信をしていますか？',
-    hint:'口コミ返信の中にある「専門用語・施術名・地域名」は、AIへのアピール文です。「ありがとうございました」の一言は、チャンスの無駄遣い。プロの言葉で返すことが、次の新規客を引き寄せます。',
+    text:'初めてのお客様が、料金と予約方法を迷わず確認できますか？',
+    hint:'ホームページの有無だけで評価するのではなく、実際に使っている予約ページも含めて、メニュー・料金・予約手順の分かりやすさを確認します。',
+    action:'メニュー・料金・予約方法を一つの流れで確認できるようにする',
     choices:[
-      {tag:'A',text:'はい。返信の内容自体もAIへのアピール材料だと知っている。',pt:10},
-      {tag:'B',text:'「ありがとうございました」程度の簡単な返信。',pt:5},
-      {tag:'C',text:'返信していない、または口コミが届いていない。',pt:0},
+      {tag:'A',text:'主なメニュー・料金・予約方法が分かりやすく載っている。',pt:10},
+      {tag:'B',text:'情報はあるが、複数ページを探さないと分からない。',pt:5},
+      {tag:'C',text:'料金や予約方法が分かりにくい、または古い。',pt:0},
     ]
   },
   {
     num:8,
-    text:'スマホで自分のHPを開いたとき、ストレスなく3秒以内にすべて表示されますか？',
-    hint:'Googleは表示速度をランキングの重要指標にしています。「重い＝やる気のないサイト」とAIに判断され、検索順位が下がります。スマホで3秒以上かかるなら、今日から画像圧縮を始めてください。',
+    text:'スマホで店舗情報を見て、予約まで進めるか確認していますか？',
+    hint:'読み込みや操作のしやすさは、お客様の体験に関わります。「3秒を超えると必ず順位が下がる」といった一律の判断はしません。',
+    action:'スマホで店舗情報から予約完了までの操作を試す',
     choices:[
-      {tag:'A',text:'爆速。画像も最適化している。',pt:10},
-      {tag:'B',text:'少し重いが、なんとか開く。',pt:5},
-      {tag:'C',text:'画像が重すぎて、なかなか表示されない。',pt:0},
+      {tag:'A',text:'スマホで表示と予約の流れを試し、問題があれば直している。',pt:10},
+      {tag:'B',text:'表示は確認したが、予約完了までは試していない。',pt:5},
+      {tag:'C',text:'スマホでの見え方や予約の流れを確認していない。',pt:0},
     ]
   },
   {
     num:9,
-    text:'インスタを「集客の柱」ではなく、お客様があなたを信じるための「カタログ」として割り切れていますか？',
-    hint:'インスタが得意なのは「共感」であって「検索」ではありません。新規集客はGoogleマップ・HPで行い、インスタは既存客の信頼を深めるカタログに徹する——この役割分担がSNS疲れを消す処方箋です。',
+    text:'地域とサービスの情報を、お客様に自然な言葉で説明していますか？',
+    hint:'所在地や対応する施術を具体的に書くと、お客様が自分に合うか判断しやすくなります。同じ地名や施術名の繰り返しは不要です。',
+    action:'所在地・対象のお客様・サービス内容を自然な文章で伝える',
     choices:[
-      {tag:'A',text:'はい。役割を明確に分けて、無駄な投稿を減らしている。',pt:10},
-      {tag:'B',text:'集客のために必死に更新しているが、疲弊している。',pt:5},
-      {tag:'C',text:'インスタさえ頑張れば、なんとかなると思っている。',pt:0},
+      {tag:'A',text:'地域とサービス内容を、実態に沿って具体的に説明している。',pt:10},
+      {tag:'B',text:'雰囲気は伝わるが、場所やサービスの説明に不足がある。',pt:5},
+      {tag:'C',text:'どこで何を提供しているか分かりにくい。',pt:0},
     ]
   },
   {
     num:10,
-    text:'地域の飲食店や、信頼できる他サイトからあなたのお店のHPへリンクを貼ってもらっていますか？',
-    hint:'被リンクは「地域の信頼の投票」です。地元ポータルサイトや近隣店舗に紹介されることが、AIから見た「地域における権威性」の証明。1件のリンクが、100件の投稿より価値を持つこともあります。',
+    text:'Googleマップ・ホームページ・SNSなどの案内は、互いにつながっていますか？',
+    hint:'お客様が見つけた場所から予約先へ進めることが大切です。SNSやホームページの役割は、サロンの客層に合わせて考えましょう。',
+    action:'各掲載先から予約先へのリンクと案内を確認する',
     choices:[
-      {tag:'A',text:'はい。地域で「信頼される店」としてネット上で紹介されている。',pt:10},
-      {tag:'B',text:'数カ所あるが、積極的には動いていない。',pt:5},
-      {tag:'C',text:'どこからもリンクされていない。',pt:0},
+      {tag:'A',text:'主要な掲載先から予約先に迷わず進める。',pt:10},
+      {tag:'B',text:'一部の掲載先では予約先が分かりにくい。',pt:5},
+      {tag:'C',text:'掲載先から予約へのつながりを確認していない。',pt:0},
     ]
   },
   {
     num:11,
-    text:'「いい技術さえあれば、いつかお客様に見つけてもらえる」と、AIへの対策を後回しにしていませんか？',
-    hint:'技術は「サービスの品質」、MEOは「お店の存在証明」。この二つは競合しません。どんなに優れた技術も、AIに存在を知られなければ幻と同じ。技術の高さをAIに正しく伝えることも、プロの仕事です。',
+    text:'新規のお客様がどこでサロンを知ったか、把握していますか？',
+    hint:'検索での表示回数だけでなく、問い合わせや予約につながった経路を確認すると、優先すべき改善を考えやすくなります。',
+    action:'新規予約のきっかけを無理のない方法で記録する',
     choices:[
-      {tag:'A',text:'いいえ。技術が最高だからこそ、それをAIに正しく伝える義務があると考えている。',pt:10},
-      {tag:'B',text:'技術が大事だと思いたいが、デジタルの重要性も感じている。',pt:5},
-      {tag:'C',text:'技術さえ磨けば、広告やAIなんて不要だと思っている。',pt:0},
+      {tag:'A',text:'予約時の確認などで、主な流入経路を把握している。',pt:10},
+      {tag:'B',text:'感覚的には分かるが、記録はしていない。',pt:5},
+      {tag:'C',text:'どの経路から新規予約が来るか分からない。',pt:0},
     ]
   },
   {
     num:12,
-    text:'今の集客活動は、やればやるほど「来年の自分が楽になる資産」として積み上がっている実感がありますか？',
-    hint:'SNS投稿は「消耗品」、MEO対策は「資産」。今日書いたGBPの投稿、口コミ返信、HP改善は、1年後も2年後もGoogleの検索結果でお店を守り続けます。労働を資産に変える設計こそが、経営の本質です。',
+    text:'掲載情報と予約状況を見直し、次の改善を決めていますか？',
+    hint:'プロフィールや予約ページを整えても、集客や検索順位は自動的には保証されません。実際の問い合わせや予約を見て改善を続けましょう。',
+    action:'問い合わせ・予約状況を見て、次に直す点を一つ決める',
     choices:[
-      {tag:'A',text:'はい。AIが学習して、勝手にお勧めしてくれる仕組みが育っている。',pt:10},
-      {tag:'B',text:'少しずつ溜まってはいるが、まだ毎日の労働に依存している。',pt:5},
-      {tag:'C',text:'全くない。毎日必死に泳がないと沈んでしまう。',pt:0},
+      {tag:'A',text:'情報と予約状況を見直し、改善点を決めている。',pt:10},
+      {tag:'B',text:'気づいたときに直すが、振り返りは不定期。',pt:5},
+      {tag:'C',text:'掲載後はほとんど見直していない。',pt:0},
     ]
   },
 ];
 
 const ranks = [
-  {min:110,max:120,rank:'S',img:'rank_s.png',title:'地域独占・レコメンドの覇者',
-   msg:'おめでとうございます！あなたは<b>「自動集客の仕組み」</b>を完璧に手に入れた覇者です。AIが寝ている間も、理想のお客様を連れ続けてくれています。'},
-  {min:90,max:109,rank:'A',img:'rank_a.png',title:'エリアの人気店',
-   msg:'素晴らしい！地域の実力店として認知されています。あと一歩、ネット上の<b>「お店の骨組み」</b>を磨けば、Sランクも夢ではありません。'},
-  {min:60,max:89,rank:'B',img:'rank_b.png',title:'脱・SNS労働予備軍',
-   msg:'惜しい！設定はできていますが、AIへの<b>「お店のアピール（データ設計）」が弱いです。毎日のSNS投稿という終わりのない労働</b>から卒業するチャンスです。'},
-  {min:30,max:59,rank:'C',img:'rank_c.png',title:'埋もれた実力店',
-   msg:'技術はあるのに、AIには存在を知られていません。Googleマップという<b>「デジタルの地図」</b>に、あなたのお店を正しく載せましょう。'},
-  {min:0,max:29,rank:'D',img:'rank_d.png',title:'デジタル上の幽霊店',
-   msg:'緊急事態！ネット上では存在しないも同然です。今すぐ<b>「昔ながらのやり方」</b>を捨てて、<b>「未来に繋がるお店の設計」</b>を始めてください。'},
+  {min:110,max:120,rank:'S',img:'rank_s.png',title:'基本情報と予約導線が整っています',
+   msg:'回答では、多くの項目が整っています。実際の問い合わせ・予約状況も確認し、必要な更新を続けましょう。'},
+  {min:90,max:109,rank:'A',img:'rank_a.png',title:'良い土台があります',
+   msg:'回答では、店舗情報や予約への案内が概ね整っています。点数が低かった項目から一つずつ確認しましょう。'},
+  {min:60,max:89,rank:'B',img:'rank_b.png',title:'改善できる項目があります',
+   msg:'回答では、基本情報や予約への流れに見直しの余地があります。まずはお客様が困りやすい箇所を確認しましょう。'},
+  {min:30,max:59,rank:'C',img:'rank_c.png',title:'基本情報から見直しましょう',
+   msg:'回答では、店舗情報や予約方法が伝わりにくい可能性があります。営業時間・連絡先・メニューから確認しましょう。'},
+  {min:0,max:29,rank:'D',img:'rank_d.png',title:'まずは掲載状況を確認しましょう',
+   msg:'回答では、オンライン上の案内に未確認の項目が多くあります。Googleビジネスプロフィールと予約先の情報から確かめましょう。'},
 ];
 
 let cur=0, scores=[];
@@ -561,7 +529,7 @@ function renderQ(){
   const pct=Math.round((cur/questions.length)*100);
   const html=`
     <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-    <div class="q-num">QUESTION ${String(q.num).padStart(2,'0')} / 12</div>
+    <div class="q-num">QUESTION ${String(q.num).padStart(2,'0')} / ${questions.length}</div>
     <div class="q-text">${q.text}</div>
     <div class="choices">
       ${q.choices.map((c,i)=>`
@@ -585,27 +553,24 @@ function answer(pt, btn, idx){
   document.querySelectorAll('.choice-btn').forEach(b=>{b.disabled=true;b.style.opacity='.4';});
   btn.style.opacity='1';
   btn.classList.add('flash');
-　 btn.blur();
+  btn.blur();
   const hintArea=document.getElementById('hint-area');
   hintArea.innerHTML=`<div class="hint-box"><div class="hint-label">💡 プロのワンポイント解説</div>${q.hint}</div>`;
   setTimeout(()=>{
     cur++;
-    if(cur>=questions.length) showLoading();
+    if(cur>=questions.length) showResult();
     else renderQ();
   },1800);
-}
-
-function showLoading(){
-  document.getElementById('loading').classList.add('active');
-  setTimeout(()=>{
-    document.getElementById('loading').classList.remove('active');
-    showResult();
-  },3000);
 }
 
 function showResult(){
   const total=scores.reduce((a,b)=>a+b,0);
   const rank=ranks.find(r=>total>=r.min && total<=r.max) || ranks[ranks.length-1];
+  const lowestScore=Math.min(...scores);
+  const priorityIndex=scores.findIndex(score=>score===lowestScore);
+  const priority=lowestScore===10
+    ? '現在の情報と実際の問い合わせ・予約状況を照らして、改善を続ける'
+    : questions[priorityIndex].action;
   const inner=document.getElementById('result-inner');
   inner.innerHTML=`
     <div class="result-rank">RANK ${rank.rank}</div>
@@ -614,11 +579,13 @@ function showResult(){
 
     <div class="result-title">${rank.title}</div>
     <div class="result-msg">${rank.msg}</div>
+    <div class="priority-box"><strong>回答から、まず確認したいこと</strong>${priority}</div>
+    <div class="result-note">この点数は回答に基づく自己点検の目安です。実際の検索順位、AI検索での表示、予約数を測定した結果ではありません。</div>
     <a href="https://lin.ee/woRCsiS" target="_blank" rel="noopener" class="line-cta">
       <div class="line-cta-inner">
-        <div class="line-cta-label">🎁 無料プレゼント受け取り</div>
-        <div class="line-cta-main">LINE登録で特典スライド資料を受け取る →</div>
-        <div class="line-cta-sub">2026年最新版「AIがお勧めしたくなるお店の作り方」解説スライド</div>
+        <div class="line-cta-label">サロン集客の情報をもっと知りたい方へ</div>
+        <div class="line-cta-main">LINEで資料の案内を見る →</div>
+        <div class="line-cta-sub">提供内容はリンク先でご確認ください</div>
       </div>
     </a>
     <button class="retry-btn" onclick="startQuiz()">もう一度診断する</button>
